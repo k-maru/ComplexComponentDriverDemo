@@ -3,6 +3,8 @@ using Selenium.StandardControls;
 using Selenium.StandardControls.PageObjectUtility;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
 namespace PageObject.Controles
@@ -52,7 +54,13 @@ const events = [...root.querySelectorAll('.fc-daygrid-day')].map(el => {
 }).flat();
 return events;
 ", this.TraverseRoot);
-                return null;
+                var data = ((ReadOnlyCollection<object>)result).Cast<Dictionary<string, object>>().Select(v =>
+                    new Key(Convert.ToInt32(v["Year"]),
+                            Convert.ToInt32(v["Month"]),
+                            Convert.ToInt32(v["Day"]),
+                            Convert.ToInt32(v["Index"])));
+
+                return data.ToArray();
             }
         }
 

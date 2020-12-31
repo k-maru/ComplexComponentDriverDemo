@@ -8,9 +8,9 @@ namespace PageObject.Pages
 {
     public class IndexPage : PageBase
     {
-        // public SpanDriver year => ByCssSelector("span[class='year']").Wait();
-        // public FullMonthCalendarDriver calendar => ById("calendar").Wait();
-        // public SpanDriver month => ByCssSelector("span[class='month']").Wait();
+        public SpanDriver year => ByCssSelector("span[class='year']").Wait();
+        public FullMonthCalendarDriver calendar => ById("calendar").Wait();
+        public SpanDriver month => ByCssSelector("span[class='month']").Wait();
         public DropDownListDriver select => ByTagName("select").Wait();
         public TextBoxDriver input => ByTagName("input").Wait();
         public ButtonDriver addbutton => ById("addbutton").Wait();
