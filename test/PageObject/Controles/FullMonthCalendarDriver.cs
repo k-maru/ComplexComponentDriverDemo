@@ -66,13 +66,26 @@ return events;
 
         public FullCalendarDayItemDriver GetItem(Key key)
         {
-            throw new NotImplementedException();
+            var element = JS.ExecuteScript(@"
+const root = arguments[0];
+const y = (arguments[1] + '');
+const m = (arguments[2] + '').padStart(2, '0');
+const d = (arguments[3] + '').padStart(2, '0');
+const index = arguments[4];
+
+const dayCell = root.querySelector(`.fc-daygrid-day[data-date=""${y}-${m}-${d}""]`);
+if(!dayCell) return;
+return dayCell.querySelector(`.fc-daygrid-day-events > .fc-daygrid-event-harness:nth-of-type(${index + 1})`);
+", this.TraverseRoot, key.Year, key.Month, key.Day, key.Index);
+            if(element is IWebElement webEl)
+            {
+                return new FullCalendarDayItemDriver(webEl, new DateTime(key.Year, key.Month, key.Day));
+            }
+            throw new ArgumentOutOfRangeException();
         }
 
         public string ToArgumentCode(Key key)
-        {
-            throw new NotImplementedException();
-        }
+            => $"new PageObject.Controles.FullMonthCalendarDriver.Key({key.Year}, {key.Month}, {key.Day}, {key.Index})";
 
         public static implicit operator FullMonthCalendarDriver(ElementFinder finder)
         {

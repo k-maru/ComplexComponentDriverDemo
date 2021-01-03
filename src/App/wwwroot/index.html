@@ -20,12 +20,13 @@
         .side {
             flex-grow: 0;
             flex-basis: 300px;
+            margin: 96px 24px;
         }
 
-        .input-form {
+        .side > section {
             border: solid 1px #cccccc;
-            margin: 96px 24px;
             padding: 14px;
+            margin-bottom: 1rem;
         }
         .input-form-row {
             margin-bottom: 0.5rem;
@@ -42,14 +43,15 @@
         document.addEventListener('DOMContentLoaded', function () {
             const calendarEl = document.getElementById('calendar');
             const now = new Date();
-            const [y, m, d] = ((d) => [d.getFullYear(), d.getMonth() + 1, d.getDate()])(now);
-            const ld = (new Date(now.getFullYear(), now.getMonth() + 1, 0)).getDate();
+            const [y, m, d] = ((d) => [d.getFullYear() + '', ((d.getMonth() + 1) + '').padStart(2, '0'), (d.getDate() + '').padStart(2, '0')])(now);
+            const lastDay = (new Date(now.getFullYear(), now.getMonth() + 1, 0)).getDate();
             document.querySelector('.year').textContent = y;
-            document.querySelector('.month').textContent = (m + '').padStart(2, '0');
-            [...Array(ld).keys()].map(d => {
+            document.querySelector('.month').textContent = m;
+            [...Array(lastDay).keys()].map(index => {
                 const el = document.createElement('option');
-                el.setAttribute('value', d + 1);
-                el.textContent = ((d + 1) + '').padStart(2, '0');
+                const day = ((index + 1) + '').padStart(2, '0')
+                el.setAttribute('value', day);
+                el.textContent = day;
                 return el;
             }).forEach(el => document.querySelector('.days').appendChild(el));
      
@@ -68,7 +70,7 @@
                     },
                     {
                         title: 'Long Event',
-                        start: '2020-12-07',
+                        start: `${y}-${m}-07`,
                         end: `${y}-${m}-10`
                     },
                     {
@@ -83,7 +85,7 @@
                     },
                     {
                         title: 'Conference',
-                        start: '2020-12-11',
+                        start: `${y}-${m}-11`,
                         end: `${y}-${m}-13`
                     },
                     {
@@ -108,7 +110,11 @@
                         url: 'http://google.com/',
                         start: `${y}-${m}-28`
                     }
-                ]
+                ],
+                eventClick(info) {
+                    info.jsEvent.preventDefault();
+                    document.querySelector('.message').textContent = info.event.title;
+                }
             });
 
             calendar.render();
@@ -130,7 +136,7 @@
             <div id="calendar"></div>
         </section>
         <section class="side">
-            <div class="input-form">
+            <section class="input-form">
                 <div class="input-form-row">
                     <span class="year"></span>/
                     <span class="month"></span>/
@@ -143,7 +149,10 @@
                     <button id="addbutton" type="button">Add</button>
                 </div>
 
-            </div>
+            </section>
+            <section>
+                <p class="message"></p>
+            </section>
         </section>
     </main>
     

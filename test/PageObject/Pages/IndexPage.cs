@@ -14,6 +14,7 @@ namespace PageObject.Pages
         public DropDownListDriver select => ByTagName("select").Wait();
         public TextBoxDriver input => ByTagName("input").Wait();
         public ButtonDriver addbutton => ById("addbutton").Wait();
+        public ParagraphDriver message => ByCssSelector(".message").Wait();
 
         public IndexPage(IWebDriver driver) : base(driver) { }
     }
